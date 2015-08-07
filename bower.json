@@ -1,6 +1,6 @@
 {
   "name": "jquery-lcn-circle-range-select",
-  "version": "0.0.0",
+  "version": "2.1.0",
   "main": [
     "src/jquery.lcnCircleRangeSelect.js",
     "src/jquery.lcnCircleRangeSelect.scss"

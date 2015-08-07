@@ -48,9 +48,30 @@ The value of the input form field then only consists of a single number and not 
 #### You can add a background-image with data-bg-image.
 
     data-bg-image="http://..."
+    
+#### You can set the widget to 'readonly'
+
+	data-readonly="true,false"    
 
 #### Initialize the widget manually
 
 If you omit the data-auto-init attribute on your input tag or if you create input tags dynamically after the domReady event has fired, you need to initialize the widget manually:
     
     <script>jQuery('input.circle-range-select').lcnCircleRangeSelect();</script>   
+    
+#### Dynamically change the widget
+
+ You can reconfigure the widget by:
+ 
+	<script>jQuery('input.circle-range-select').trigger("configure", 
+		{ min: 0, 
+		  max: 100, 
+		  value: 30, 
+		  readonly: [true,false],
+		  unit: "h",
+		  bgImage: [url, 'none']  
+		});
+	</script>
+ 	
+ 	
+ 

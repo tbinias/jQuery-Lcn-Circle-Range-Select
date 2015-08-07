@@ -63,6 +63,7 @@
   }
 
   function updateWidget($container) {
+	  
     var $input = $container.find('input');
     var isSingleValue = _isSingleValue($input);
     var $handles = $container.find('.handle');
@@ -71,6 +72,19 @@
       var $handle2 = $container.find('.handle2');
     }
 
+    var backgroundImage = $input.attr('data-bg-image');
+    if (backgroundImage) {
+      $container.css({
+        'background-image': 'url("' + backgroundImage + '")',
+        'background-size': 'contain'
+      });
+    } else if (backgroundImage == "none") {
+    	$container.css({
+            'background-image': 'none',
+            'background-size': ''
+          });
+    }  
+    
     var outerWidth = $container.outerWidth();
     var innerWidth = $container.innerWidth();
     var borderWidth = (outerWidth - innerWidth) / 2;
@@ -128,14 +142,6 @@
 
     $container = $('<div class="circle-range-select-wrapper"></div>');
 
-    var backgroundImage = $input.attr('data-bg-image');
-    if (backgroundImage) {
-      $container.css({
-        'background-image': 'url("' + backgroundImage + '")',
-        'background-size': 'contain'
-      });
-    }
-
     $input.wrap($container);
     $container = $input.parent();
 
@@ -166,13 +172,13 @@
     		var $input = $container.find('input');
     		if (config.value != null) {
     			var value = config.value;
-    			var $handle1 = $container.find('.handle1');                          
-        		if (value.split(";").length > 1) {
+    			var $handle1 = $container.find('.handle1');
+        		if (typeof value == "string" && value.split(";").length > 1) {
         			var $handle2 = $container.find('.handle2');
         			 $handle1.attr("data-value", value.split(";")[0]);
         		     $handle2.attr("data-value", value.split(";")[1]);
         		} else {
-        			$handle1.attr("data-value", value.split(";")[0]);
+        			$handle1.attr("data-value", value);
         		}	
     		}
     		if (config.readonly != null) {    			
@@ -186,6 +192,9 @@
     		}
     		if (config.unit != null) {
     	   		$input.attr("data-unit", config.unit);
+    		}
+    		if (config.bgImage != null) {
+    			$input.attr("data-bg-image", config.bgImage);
     		}
     	}   		
     	updateWidget($container);
