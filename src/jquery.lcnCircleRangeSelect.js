@@ -154,6 +154,20 @@
       });
     });
 
+    $container.on('updateValue', function(e, data) {
+    	$container = $(e.target).parent();
+    	if (data) {
+    		var $handle1 = $container.find('.handle1');                          
+    		if (data.split(";").length > 1) {
+    			var $handle2 = $container.find('.handle2');
+    			 $handle1.attr("data-value", data.split(";")[0]);
+    		     $handle2.attr("data-value", data.split(";")[1]);
+    		} else {
+    			$handle1.attr("data-value", data.split(";")[0]);
+    		}
+    	}
+    	updateWidget($container);
+    });
     $(window).on('resize', updateWidget.bind(null, $container));
   }
 
