@@ -80,6 +80,8 @@
 
     var minValue = parseFloat($input.attr('data-min')) || 0;
     var maxValue = parseFloat($input.attr('data-max')) || 360;
+    var readonly = $input.attr('data-readonly') === "true" || false;
+    
     var unit = $input.attr('data-unit') === undefined ? '&deg;' : $input.attr('data-unit');
     var steps = maxValue - minValue;
     var stepSizeInDegrees = 360/steps;
@@ -92,6 +94,11 @@
       var X = Math.round(radius + radius * Math.sin(deg*Math.PI/180));
       var Y = Math.round(radius + radius * -Math.cos(deg*Math.PI/180));
       $handle.css({ left: X, top: Y });
+      if (readonly) {
+    	  $handle.css({ display: 'none' });  
+      } else {
+    	  $handle.css({ display: 'block' });
+      }
       $container.find($handle.attr('data-value-target')).html($handle.attr('data-value') + unit);
     });
 
@@ -153,21 +160,36 @@
         $currentHandle = null;
       });
     });
-
-    $container.on('updateValue', function(e, data) {
+    $container.on('configure', function(e, config) {
     	$container = $(e.target).parent();
-    	if (data) {
-    		var $handle1 = $container.find('.handle1');                          
-    		if (data.split(";").length > 1) {
-    			var $handle2 = $container.find('.handle2');
-    			 $handle1.attr("data-value", data.split(";")[0]);
-    		     $handle2.attr("data-value", data.split(";")[1]);
-    		} else {
-    			$handle1.attr("data-value", data.split(";")[0]);
+    	if (config) {
+    		var $input = $container.find('input');
+    		if (config.value != null) {
+    			var value = config.value;
+    			var $handle1 = $container.find('.handle1');                          
+        		if (value.split(";").length > 1) {
+        			var $handle2 = $container.find('.handle2');
+        			 $handle1.attr("data-value", value.split(";")[0]);
+        		     $handle2.attr("data-value", value.split(";")[1]);
+        		} else {
+        			$handle1.attr("data-value", value.split(";")[0]);
+        		}	
     		}
-    	}
+    		if (config.readonly != null) {    			
+    	   		$input.attr("data-readonly", config.readonly);		
+    		}
+    		if (config.min != null) {
+    	   		$input.attr("data-min", config.min);
+    		}
+    		if (config.max != null) {
+    	   		$input.attr("data-max", config.max);
+    		}
+    		if (config.unit != null) {
+    	   		$input.attr("data-unit", config.unit);
+    		}
+    	}   		
     	updateWidget($container);
-    });
+    });            
     $(window).on('resize', updateWidget.bind(null, $container));
   }
 
